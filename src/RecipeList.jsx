@@ -1,11 +1,19 @@
-function RecipeList ( {recipes}) { 
+import RecipeCard from "./RecipeCard";
+import App from "./App";
+
+const displayRecipe = (recipe) => {
+    setSelectedRecipe(recipe);
+}
+
+function RecipeList ( {recipes, onRecipeSelect}) { 
     return ( 
         <div>
             {recipes.map((recipe) =>  (
-            <div key={recipe.idMeal}>
-            <img src={recipe.strMealThumb} alt={recipe.strMeal} />
-            <h2> {recipe.strMeal}</h2>
-            </div>
+            <RecipeCard 
+                key={recipe.idMeal}
+                recipe={recipe}
+                onClick={() => onRecipeSelect(recipe) }
+            />
         ))}
         </div>
     )

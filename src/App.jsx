@@ -66,29 +66,70 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
 
-      <h1>Recipes</h1>
+      {/* Header */}
+      <header className="bg-orange-500 text-white py-8 shadow-md">
+        <div className="max-w-6xl mx-auto px-4">
 
-      <Search onSearch={searchRecipes} />
+          <h1 className="text-4xl font-bold text-center mb-2">
+            Recipe Book
+          </h1>
 
-      {message && <p>{message}</p>}
+          <p className="text-center text-orange-100">
+            Find delicious recipes for your next meal
+          </p>
 
-      {loading && <p>Loading...</p>}
+        </div>
+      </header>
 
-      {!loading && !message && (
-        selectedRecipe ? (
-          <RecipeFull
-            selectedRecipe={selectedRecipe}
-            onBack={clearSelectedRecipe}
-          />
-        ) : (
-          <RecipeList
-            recipes={recipes}
-            onRecipeSelect={displayRecipe}
-          />
-        )
-      )}
+
+      {/* Main content */}
+      <main className="max-w-6xl mx-auto px-4 py-10">
+
+        <Search onSearch={searchRecipes} />
+
+
+        {/* Message */}
+        {message && (
+          <p className="text-center text-red-500 font-medium mb-6">
+            {message}
+          </p>
+        )}
+
+
+        {/* Loading */}
+        {loading && (
+          <div className="flex justify-center items-center py-10">
+            <p className="text-gray-600 text-lg">
+              Loading recipes...
+            </p>
+          </div>
+        )}
+
+
+        {/* Recipes / Full recipe */}
+        {!loading && !message && (
+
+          selectedRecipe ? (
+
+            <RecipeFull
+              selectedRecipe={selectedRecipe}
+              onBack={clearSelectedRecipe}
+            />
+
+          ) : (
+
+            <RecipeList
+              recipes={recipes}
+              onRecipeSelect={displayRecipe}
+            />
+
+          )
+
+        )}
+
+      </main>
 
     </div>
   );

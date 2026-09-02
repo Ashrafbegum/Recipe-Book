@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 import RecipeList from "./RecipeList";
@@ -6,6 +6,7 @@ import RecipeFull from "./RecipeFull";
 import Search from "./Search";
 
 function App() {
+
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   const [url, setUrl] = useState(initialUrl);
 
   const getRecipes = () => {
+
     setLoading(true);
 
     axios
@@ -26,6 +28,8 @@ function App() {
       })
       .catch((error) => {
         console.error(error);
+        setMessage("Something went wrong. Please try again.");
+        setRecipes([]);
       })
       .finally(() => {
         setLoading(false);
@@ -36,11 +40,11 @@ function App() {
     getRecipes();
   }, [url]);
 
-  const searchRecipes = (search) => {
-     if (search.trim() === "") {
-        setMessage("Please enter a recipe to search");
+  const searchRecipes = useCallback((search) => {
 
-        setRecipes([]);
+    if (search.trim() === "") {
+      setMessage("");
+      setRecipes([]);
       return;
     }
 
@@ -50,7 +54,8 @@ function App() {
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${search.trim()}`;
 
     setUrl(searchUrl);
-  };
+
+  }, []);
 
   const displayRecipe = (recipe) => {
     setSelectedRecipe(recipe);
@@ -62,6 +67,7 @@ function App() {
 
   return (
     <div>
+
       <h1>Recipes</h1>
 
       <Search onSearch={searchRecipes} />
@@ -71,18 +77,19 @@ function App() {
       {loading && <p>Loading...</p>}
 
       {!loading && !message && (
-          selectedRecipe ? (
-            <RecipeFull
-              selectedRecipe={selectedRecipe}
-              onBack={clearSelectedRecipe}
-            />
-          ) : (
-            <RecipeList
-              recipes={recipes}
-              onRecipeSelect={displayRecipe}
-            />
-          )
-      )}  
+        selectedRecipe ? (
+          <RecipeFull
+            selectedRecipe={selectedRecipe}
+            onBack={clearSelectedRecipe}
+          />
+        ) : (
+          <RecipeList
+            recipes={recipes}
+            onRecipeSelect={displayRecipe}
+          />
+        )
+      )}
+
     </div>
   );
 }

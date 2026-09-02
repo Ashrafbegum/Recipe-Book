@@ -4,6 +4,7 @@ import axios from "axios";
 import RecipeList from "./RecipeList";
 import RecipeFull from "./RecipeFull";
 import Search from "./Search";
+import Spinner from "./Spinner";
 
 function App() {
 
@@ -87,8 +88,9 @@ function App() {
       {/* Main content */}
       <main className="max-w-6xl mx-auto px-4 py-10">
 
-        <Search onSearch={searchRecipes} />
-
+     {!selectedRecipe && (
+      <Search onSearch={searchRecipes} />
+     )}
 
         {/* Message */}
         {message && (
@@ -99,14 +101,7 @@ function App() {
 
 
         {/* Loading */}
-        {loading && (
-          <div className="flex justify-center items-center py-10">
-            <p className="text-gray-600 text-lg">
-              Loading recipes...
-            </p>
-          </div>
-        )}
-
+        {loading && <Spinner />}
 
         {/* Recipes / Full recipe */}
         {!loading && !message && (
